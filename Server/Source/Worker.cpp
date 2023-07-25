@@ -99,7 +99,9 @@ void Worker::run() {
         m_audio->init(std::move(sock), m_cfg);
         RealtimeOptions opts;
         opts.workDurationMs = (uint32)lround(m_cfg.samplesPerBlock / m_cfg.sampleRate * 1000) - 1;
-        m_audio->startRealtimeThread(opts);
+        if (! m_audio->startRealtimeThread(opts) ) {
+            m_audio->startThread();
+        }
     } else {
         logln("failed to establish audio connection");
     }
