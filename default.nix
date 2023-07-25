@@ -145,6 +145,6 @@ in stdenv.mkDerivation rec {
       patchelf --set-rpath "${libPath}" $out/bin/$exe
     done
 
-    find $out/lib -type f -exec patchelf --set-rpath "${libPath}" {} \;
+    find $out/lib -type f -name '*.so' -exec patchelf --set-rpath "${libPath}" {} \;
   '';
 }
