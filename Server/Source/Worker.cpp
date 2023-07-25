@@ -98,7 +98,7 @@ void Worker::run() {
     if (nullptr != sock && sock->isConnected()) {
         m_audio->init(std::move(sock), m_cfg);
         RealtimeOptions opts;
-        if (! m_audio->startRealtimeThread(opts) ) {
+        if (!m_audio->startRealtimeThread(opts)) {
             m_audio->startThread();
         }
     } else {
