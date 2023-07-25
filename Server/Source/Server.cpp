@@ -896,7 +896,6 @@ void Server::scanForPlugins(const std::vector<String>& include) {
     std::atomic<float> progress{0};
 
     StringArray fileOrIds;
-    KnownPluginList pluginList;
 
     for (auto& fmt : fmts) {
         FileSearchPath searchPaths;
@@ -923,15 +922,23 @@ void Server::scanForPlugins(const std::vector<String>& include) {
 
     for (int idx = 0; idx < fileOrIds.size(); idx++) {
         auto& fileOrId = fileOrIds.getReference(idx);
-        auto pluginDesc = m_pluginList.getTypeForFile(fileOrId);
-        auto name = getPluginName(fileOrId, pluginDesc.get(), false);
-        auto type = getPluginType(fileOrId, pluginDesc.get());
 
-        auto* fmt = type == "au"     ? fmts[fmtAU].get()
-                    : type == "vst3" ? fmts[fmtVST3].get()
-                    : type == "vst"  ? fmts[fmtVST].get()
-                    : type == "lv2"  ? fmts[fmtLV2].get()
-                                     : nullptr;
+        String name, type;
+        AudioPluginFormat* fmt;
+
+        for (const auto& src : fmts) {
+            const auto& format = src.get();
+
+            if (format->fileMightContainThisPluginType(fileOrId)) {
+                logln(format->getName());
+                name = format->getNameOfPluginFromIdentifier(fileOrId);
+                type = format->getName().toLowerCase();
+                fmt = format;
+                break;
+            }
+        }
+
+        auto pluginDesc = m_pluginList.getTypeForFile(fileOrId);
 
         if (nullptr == fmt) {
             logln("error: can't detect plugin format for " << fileOrId);
