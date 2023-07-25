@@ -184,7 +184,7 @@ macro(ag_strip target_name target_dir)
       COMMAND
         ${CMAKE_COMMAND} -E echo "Stripping file $<TARGET_FILE:${target_name}>"
       COMMAND
-        /usr/bin/strip -S $<TARGET_FILE:${target_name}>
+        @bintuils@/bin/strip -S $<TARGET_FILE:${target_name}>
       )
   elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     add_custom_target(${target_name}_DBGSYM ALL DEPENDS ${target_name}
@@ -199,7 +199,7 @@ macro(ag_strip target_name target_dir)
       COMMAND
         ${CMAKE_COMMAND} -E echo "Stripping file $<TARGET_FILE:${target_name}>"
       COMMAND
-        /usr/bin/strip $<TARGET_FILE:${target_name}>
+        @binutils@/bin/strip $<TARGET_FILE:${target_name}>
       )
   elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     add_custom_target(${target_name}_STRIP ALL DEPENDS ${target_name}
