@@ -63,21 +63,21 @@ static const String SERVER_CONFIG_FILE_OLD = "~/.audiogridderserver";
 static const String PLUGIN_CONFIG_FILE_OLD = "~/.audiogridder";
 static const String KNOWN_PLUGINS_FILE_OLD = "~/.audiogridderserver.cache";
 
-static const String SERVER_CONFIG_FILE = "~/.audiogridder/audiogridderserver{id}.cfg";
-static const String SERVERS_STARTUP_FILE = "~/.audiogridder/serverstartup.cfg";
-static const String PLUGIN_CONFIG_FILE = "~/.audiogridder/audiogridderplugin.cfg";
-static const String PLUGIN_TRAY_CONFIG_FILE = "~/.audiogridder/audiogridderplugintray.cfg";
-static const String KNOWN_PLUGINS_FILE = "~/.audiogridder/audiogridderserver{id}.cache";
-static const String DEAD_MANS_FILE = "~/.audiogridder/audiogridderserver{id}.crash";
-static const String SCAN_ERROR_FILE = "~/.audiogridder/audiogridderserver{id}.scanerror";
-static const String SCAN_LAYOUT_ERROR_FILE = "~/.audiogridder/audiogridderserver{id}.scanlayout";
-static const String PLUGIN_LAYOUTS_FILE = "~/.audiogridder/audiogridderserver{id}.layouts";
-static const String SERVER_RUN_FILE = "~/.audiogridder/audiogridderserver{id}.running";
-static const String SERVER_WINDOW_POSITIONS_FILE = "~/.audiogridder/audiogridderserver{id}.winpos";
-static const String PLUGIN_WINDOW_POSITIONS_FILE = "~/.audiogridder/audiogridderplugin.winpos";
+static const String SERVER_CONFIG_FILE = "~/.config/audiogridder/audiogridderserver{id}.cfg";
+static const String SERVERS_STARTUP_FILE = "~/.config/audiogridder/serverstartup.cfg";
+static const String PLUGIN_CONFIG_FILE = "~/.config/audiogridder/audiogridderplugin.cfg";
+static const String PLUGIN_TRAY_CONFIG_FILE = "~/.config/audiogridder/audiogridderplugintray.cfg";
+static const String KNOWN_PLUGINS_FILE = "~/.config/audiogridder/audiogridderserver{id}.cache";
+static const String DEAD_MANS_FILE = "~/.config/audiogridder/audiogridderserver{id}.crash";
+static const String SCAN_ERROR_FILE = "~/.config/audiogridder/audiogridderserver{id}.scanerror";
+static const String SCAN_LAYOUT_ERROR_FILE = "~/.config/audiogridder/audiogridderserver{id}.scanlayout";
+static const String PLUGIN_LAYOUTS_FILE = "~/.config/audiogridder/audiogridderserver{id}.layouts";
+static const String SERVER_RUN_FILE = "~/.config/audiogridder/audiogridderserver{id}.running";
+static const String SERVER_WINDOW_POSITIONS_FILE = "~/.config/audiogridder/audiogridderserver{id}.winpos";
+static const String PLUGIN_WINDOW_POSITIONS_FILE = "~/.config/audiogridder/audiogridderplugin.winpos";
 static const String PRESETS_DIR =
     File::getSpecialLocation(File::userDocumentsDirectory).getFullPathName() + "/AudioGridder Presets";
-static const String DOMAIN_SOCKETS_DIR = "~/.audiogridder/sockets";
+static const String DOMAIN_SOCKETS_DIR = "/tmp/audiogridder-sockets";
 
 #else
 
@@ -145,7 +145,7 @@ enum ConfigFileType {
 
 inline String getLogDirName() {
 #ifdef JUCE_LINUX
-    String path = "~/.audiogridder/log";
+    String path = "~/.cache/audiogridder/log";
 #else
     auto sep = File::getSeparatorString();
     String path = FileLogger::getSystemLogFileFolder().getFullPathName();
