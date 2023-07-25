@@ -98,7 +98,6 @@ void Worker::run() {
     if (nullptr != sock && sock->isConnected()) {
         m_audio->init(std::move(sock), m_cfg);
         RealtimeOptions opts;
-        opts.workDurationMs = (uint32)lround(m_cfg.samplesPerBlock / m_cfg.sampleRate * 1000) - 1;
         if (! m_audio->startRealtimeThread(opts) ) {
             m_audio->startThread();
         }
