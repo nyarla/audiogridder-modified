@@ -132,29 +132,7 @@ bool ProcessorClient::startSandbox() {
 
         StringArray args;
 
-#ifndef AG_UNIT_TESTS
-        args.add(File::getSpecialLocation(File::currentExecutableFile).getFullPathName());
-        if (auto srv = getApp()->getServer()) {
-            args.addArray({"-id", String(srv->getId())});
-        } else {
-            throw std::runtime_error("no server object");
-        }
-#else
-        auto exe = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory();
-#if JUCE_WINDOWS
-        exe = exe.getChildFile("AudioGridderServer.exe");
-#else
-        exe = exe.getChildFile("AudioGridderServer.app")
-                  .getChildFile("Contents")
-                  .getChildFile("MacOS")
-                  .getChildFile("AudioGridderServer");
-#endif
-        // args.add("lldb");
-        args.add(exe.getFullPathName());
-        // args.addArray({"-o", "process launch --tty", "--"});
-        args.addArray({"-id", "999"});
-#endif
-
+        args.add("@out@/bin/AudioGridderServer");
         args.add("-load");
         args.addArray({"-pluginid", m_id});
         args.addArray({"-workerport", String(m_port)});

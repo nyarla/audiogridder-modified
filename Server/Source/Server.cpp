@@ -723,7 +723,7 @@ void Server::scanNextPlugin(const String& id, const String& name, const String& 
     fileFmt << "|" << fmt;
     ChildProcess proc;
     StringArray args;
-    args.add(File::getSpecialLocation(File::currentExecutableFile).getFullPathName());
+    args.add("@out@/bin/AudioGridderServer");
     args.addArray({"-scan", fileFmt});
     args.addArray({"-id", String(srvId)});
     if (secondRun) {
@@ -1294,7 +1294,7 @@ void Server::runServer() {
                     auto sandbox = std::make_shared<SandboxMaster>(*this, id);
                     logln("creating sandbox " << id);
                     if (sandbox->launchWorkerProcess(
-                            File::getSpecialLocation(File::currentExecutableFile), Defaults::SANDBOX_CMD_PREFIX,
+                            File("@out@/bin/AudioGridderServer"), Defaults::SANDBOX_CMD_PREFIX,
                             {"-id", String(getId()), "-islocal", String((int)isLocal), "-clientid", id}, 3000, 30000)) {
                         sandbox->onPortReceived = [this, id, clnt](int sandboxPort) {
                             traceScope();

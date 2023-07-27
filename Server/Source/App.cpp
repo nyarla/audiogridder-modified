@@ -240,7 +240,7 @@ void App::initialise(const String& commandLineParameters) {
                 m_child = std::make_unique<std::thread>([this, srvId] {
                     ChildProcess proc;
                     StringArray procArgs;
-                    procArgs.add(File::getSpecialLocation(File::currentExecutableFile).getFullPathName());
+                    procArgs.add("@out@/bin/AudioGridderServer");
                     procArgs.add("-server");
                     if (srvId > -1) {
                         procArgs.add("-id");
@@ -298,7 +298,7 @@ void App::initialise(const String& commandLineParameters) {
                         int id = ids[i];
                         auto& proc = masters[(size_t)i];
                         StringArray procArgs;
-                        procArgs.add(File::getSpecialLocation(File::currentExecutableFile).getFullPathName());
+                        procArgs.add("@out@/bin/AudioGridderServer");
                         procArgs.addArray(args);
                         procArgs.addArray({"-id", String(id)});
                         proc.start(procArgs);

@@ -1873,17 +1873,7 @@ void PluginProcessor::TrayConnection::run() {
                 success = connectToSocket("localhost", Defaults::PLUGIN_TRAY_PORT, 500);
             }
             if (!success) {
-                String path = File::getSpecialLocation(File::globalApplicationsDirectory).getFullPathName();
-#ifdef JUCE_MAC
-#ifdef DEBUG
-                path << "/Debug";
-#endif
-                path << "/AudioGridderPluginTray.app/Contents/MacOS/AudioGridderPluginTray";
-#elif JUCE_WINDOWS
-                path << "/AudioGridderPluginTray/AudioGridderPluginTray.exe";
-#elif JUCE_LINUX
-                path << "/local/share/audiogridder/AudioGridderPluginTray";
-#endif
+                String path = "@out@/bin/AudioGridderPluginTray";
                 if (File(path).existsAsFile()) {
                     logln("tray connection failed, trying to run tray app: " << path);
                     ChildProcess proc;
