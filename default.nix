@@ -31,7 +31,7 @@ in stdenv.mkDerivation rec {
   # build by `nix-build` needs to checkout JUCE submodule.
   src = ./.;
 
-  nativeBuildInputs = [ cmake pkgconfig python3 findutils binutils ];
+  nativeBuildInputs = [ cmake pkg-config python3 findutils binutils ];
   buildInputs = [
     alsaLib
     atk
