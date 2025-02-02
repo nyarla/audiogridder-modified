@@ -1,4 +1,4 @@
 [submodule "JUCE"]
 	path = JUCE
-	url = https://github.com/nyarla/JUCE.git
-	branch = merged
+	url = https://github.com/apohl79/JUCE
+	branch = audiogridder-patches
