@@ -1,4 +1,6 @@
-{ pkgs ? import <nixpkgs> { } }:
+{
+  pkgs ? import <nixpkgs> { },
+}:
 
 with pkgs;
 
@@ -10,93 +12,102 @@ let
     sha256 = "sha256-ESgeLkX/CQPY4/x3yl+H0OdpM9uc2z6dh4vMzcvXTR8=";
   };
 
-  vst2sdk = fetchzip {
-    url = "https://archive.org/download/VST2SDK/vst_sdk2_4_rev2.zip";
-    sha256 = "sha256-6eDJYGfuVczOTaZNUYa/dLEoCzl6Ysi1I1NrxuN2mPQ=";
-  };
-
   sdks = runCommand "ag-sdks" { } ''
     mkdir -p $out/vstsdk2.4
-    cp -r ${vst2sdk}/* $out/vstsdk2.4/
+    cp -r ${pkgs.vst2-sdk}/* $out/vstsdk2.4/
   '';
 
   boost178Static = boost178.override {
     enableShared = false;
     enableStatic = true;
   };
-in stdenv.mkDerivation rec {
+in
+stdenv.mkDerivation rec {
   pname = "audiogridder-modified";
   version = "1.2.0-mod";
 
   # build by `nix-build` needs to checkout JUCE submodule.
   src = ./.;
 
-  nativeBuildInputs = [ cmake pkg-config python3 findutils binutils ];
-  buildInputs = [
-    alsaLib
-    atk
-    boost178Static
-    cairo
-    curlFull
-    curlFull.dev
-    freetype
-    gdk-pixbuf
-    glib
-    glib.dev
-    graphviz
-    gtk3
-    gtk3.dev
-    gtkmm3
-    gtkmm3.dev
-    harfbuzz
-    ladspa-sdk
-    libGLU
-    libappindicator-gtk3
-    libappindicator-gtk3.dev
-    libdatrie.dev
-    libdatrie.out
-    libdbusmenu
-    libepoxy.dev
-    libepoxy.out
-    libjack2
-    libjpeg_turbo
-    libpng
-    libselinux.dev
-    libselinux.out
-    libsepol.dev
-    libsepol.out
-    libsysprof-capture
-    libthai.dev
-    libthai.out
-    libxkbcommon.dev
-    libxkbcommon.out
-    pango
-    pcre.dev
-    pcre.out
-    pcre2.dev
-    pcre2.out
-    sqlite.dev
-    sqlite.out
-    util-linux.dev
-    util-linux.out
-    webkitgtk
-    zlib
-  ] ++ (with xorg; [
-    libX11
-    libXcomposite
-    libXcursor
-    libXdmcp.dev
-    libXdmcp.out
-    libXext
-    libXinerama
-    libXrandr
-    libXrender
-    libXtst
-    libxcb
-  ]);
+  nativeBuildInputs = [
+    cmake
+    pkg-config
+    python3
+    findutils
+    binutils
+  ];
+  buildInputs =
+    [
+      alsa-lib
+      atk
+      boost178Static
+      cairo
+      curlFull
+      curlFull.dev
+      freetype
+      gdk-pixbuf
+      glib
+      glib.dev
+      graphviz
+      gtk3
+      gtk3.dev
+      gtkmm3
+      gtkmm3.dev
+      harfbuzz
+      ladspa-sdk
+      libGLU
+      libappindicator-gtk3
+      libappindicator-gtk3.dev
+      libdatrie.dev
+      libdatrie.out
+      libdbusmenu
+      libepoxy.dev
+      libepoxy.out
+      libjack2
+      libjpeg_turbo
+      libpng
+      libselinux.dev
+      libselinux.out
+      libsepol.dev
+      libsepol.out
+      libsysprof-capture
+      libthai.dev
+      libthai.out
+      libxkbcommon.dev
+      libxkbcommon.out
+      pango
+      pcre.dev
+      pcre.out
+      pcre2.dev
+      pcre2.out
+      sqlite.dev
+      sqlite.out
+      util-linux.dev
+      util-linux.out
+      webkitgtk
+      zlib
+    ]
+    ++ (with xorg; [
+      libX11
+      libXcomposite
+      libXcursor
+      libXdmcp.dev
+      libXdmcp.out
+      libXext
+      libXinerama
+      libXrandr
+      libXrender
+      libXtst
+      libxcb
+    ]);
 
-  libPath =
-    lib.makeLibraryPath (buildInputs ++ [ stdenv.cc.cc stdenv.cc.libc ]);
+  libPath = lib.makeLibraryPath (
+    buildInputs
+    ++ [
+      stdenv.cc.cc
+      stdenv.cc.libc
+    ]
+  );
 
   postPatch = ''
     export binutils=${binutils}
